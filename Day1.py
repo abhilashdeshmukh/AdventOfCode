@@ -16,14 +16,15 @@ help_dict = {
 
 for line in data:
     print("Before:" + line)
+    numbers_old = list(map(int, re.findall(r'\d', line)))
+    calibration_nr_old = 10 * numbers_old[0] + numbers_old[-1]
+    print("Old_Value:" + calibration_nr_old.__str__())
     foundNumbers = []
-    if line == "6ftlgzrbfjeightsix5onesevenfourtwoneh\n":
-        print("Here")
     for key, value in help_dict.items():
         for m in re.finditer(key, line):
             foundNumbers.append([m.start(), key])
     foundNumbers.sort()
-    print(foundNumbers)
+    #print(foundNumbers)
     nextPossible = 0
     idx = 0
     for elem in foundNumbers:
@@ -31,17 +32,19 @@ for line in data:
             del foundNumbers[idx]
         nextPossible = elem[0] + len(elem[1])
         idx = idx + 1
-    print(foundNumbers)
+    #print(foundNumbers)
     for elem in foundNumbers:
         line = re.sub(elem[1], help_dict[elem[1]], line, count=1)
-        print(line)
+        #print(line)
         #line = re.sub(key, value, line)
-    print("After:" + line)
     numbers = list(map(int, re.findall(r'\d', line)))
-    print(numbers)
+    #print(numbers)
     calibration_nr = 10*numbers[0] + numbers[-1]
-    print(calibration_nr)
+    #print(calibration_nr)
     cal_sum = cal_sum + calibration_nr
-
+    if calibration_nr != calibration_nr_old:
+        print("-----------------------------------------------")
+    print("After:" + line)
+    print("New_Value:" + calibration_nr.__str__() + "\n")
 print(cal_sum)
 
